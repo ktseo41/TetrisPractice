@@ -5,6 +5,7 @@ let Playground = function(){
     // speed, 시간에 따라서 speed를 다르게 해주고
     // speed를 기준으로 moveDown의 interval을 조정해주면 된다.
     this.speed = 1;
+    this.checkerCount = 0;
 
     // map
     // 회전 및 블럭의 실시간 위치를 위해 필요하다.
@@ -42,8 +43,22 @@ Playground.prototype.init = function(){
     this.start();
 }
 
-Playground.prototype.checker = function(){
+Playground.prototype.checker = function(_this){
+    // 중요한 Method
+    // 짧은 시간마다 모든 요소를 계속 체크해서 active블럭은 moveDown해주고
+    // 바닥에 닿은 블럭은 deactive해주고.
+    // 기존 moveDown 등을 얘가 해주게 하자
 
+    let activeBlocks = document.querySelectorAll('div.block#active');
+    if((1000 / _this.speed) == (_this.checkerCount)){
+        activeBlocks.forEach((eachBlock) => {
+            _this.moveDown(eachBlock);
+        })
+        _this.checkerCount = 0;
+    }else{
+        _this.checkerCount += 100;
+    }
+    
 }
 
 Playground.prototype.makeBlock = function(){
@@ -64,7 +79,7 @@ Playground.prototype.makeBlock = function(){
     divElem.className = 'block'
     divElem.className += ' ' + typeList[Math.floor(Math.random() * 2)];
     divElem.style.position = 'absolute';
-    divElem.style.top = '0px';
+    divElem.style.top = '-20px';
     divElem.style.left = '100px';
     divElem.id = 'active';
 }
@@ -96,24 +111,19 @@ Playground.prototype.makeBlock = function(){
 // makeBlock()내에서 기존의 PGDOM을 참고해야 하므로 안된다.
 
 
-Playground.prototype.moveDown = function(_this){
+Playground.prototype.moveDown = function(eachBlock){
     // interval해주는 함수라 global에서 돌아간다. _this argument를 받아서
     // 기존 playground instance를 가르키게 하자.
-    let activeBlock = document.querySelector('div.block#active');
-    let currentTop = Number(activeBlock.style.top.match(/[0-9]+/g)[0]);
-    if(currentTop === 420){
-        activeBlock.id = 'deactive';
-        _this.makeBlock();
-        //this.stop();
-    }else{
-        activeBlock.style.top = (currentTop + 20) + 'px'
-    }
-    console.log('top : ' + activeBlock.style.top);
+    //--> checker가 생겨서 얘는 playground를 가리킬 필요는 없고, 
+    // Element 배열을 받아서 그 Element들을 moveDown 해주면 된다.
+    let currentTop = Number(eachBlock.style.top.match(/[-0-9]+/g)[0]);
+    eachBlock.style.top = (currentTop + 20) + 'px';
+    console.log('top : ' + eachBlock.style.top);
 }
 
 Playground.prototype.moveLeft = function(){
     let activeBlock = document.querySelector('div.block#active');
-    let currentLeft = Number(activeBlock.style.left.match(/[0-9]+/g)[0]);
+    let currentLeft = Number(activeBlock.style.left.match(/[-0-9]+/g)[0]);
     if(currentLeft !== 0){
         activeBlock.style.left = (currentLeft - 20) + 'px'
         console.log('left : ' + activeBlock.style.left);
@@ -121,14 +131,11 @@ Playground.prototype.moveLeft = function(){
 }
 
 Playground.prototype.moveRight = function(){
-    if(true){
-        console.log(this);
-    }
     let activeBlock = document.querySelector('div.block#active');
-    let currentLeft = Number(activeBlock.style.left.match(/[0-9]+/g)[0]);
+    let currentLeft = Number(activeBlock.style.left.match(/[-0-9]+/g)[0]);
     if(currentLeft !== 180){
         activeBlock.style.left = (currentLeft + 20) + 'px'
-        console.log('left : ' + activeBlock.style.left);
+        console.log('righted, left : ' + activeBlock.style.left);
     }
 }
 
@@ -142,8 +149,8 @@ Playground.prototype.immediateDown = function(){
 }
 
 Playground.prototype.start = function(){
-    this.moveDownIntervalID = setInterval(this.moveDown, 300, this);
-    this.checkerIntervalID = setInterval(this.checker, 200);
+    //this.moveDownIntervalID = setInterval(this.moveDown, 300, this);
+    this.checkerIntervalID = setInterval(this.checker, 100, this);
 }
 
 Playground.prototype.stop = function(){
