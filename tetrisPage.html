@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tetris</title>
+        <style>
+            h1{
+                margin: 0px;
+                text-align: center;
+                padding-bottom: 10px;
+                border-bottom: 3px solid black;
+            }
+            div#PlayGround{
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                height: 440px;
+                width: 200px;
+                margin-left: -100px;
+                margin-top: -220px;
+                border-bottom: 3px solid black;
+                border-left: 3px solid black;
+                border-right: 3px solid black;
+                border-top:4px dotted grey;
+            }
+            div.block.I {
+                height: 18px;
+                width: 18px;
+                background-color: yellow;
+                border: 1px solid black;
+            }
+            div.block.O {
+                height: 18px;
+                width: 18px;
+                background-color: green;
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Tetris</h1>
+        <button onclick="tetris.moveDown()">moveDown</button>
+        <button onclick="tetris.moveLeft()">moveLeft</button>
+        <button onclick="tetris.moveRight()">moveRight</button>
+        <button onclick="tetris.immediateDown()">immediateDown</button>
+        <div id="PlayGround">
+            <script src="tetris.js"></script>
+        </div>
+    </body>
+</html>
