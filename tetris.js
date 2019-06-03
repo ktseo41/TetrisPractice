@@ -47,10 +47,9 @@ Playground.prototype.checker = function(_this){
     // 중요한 Method
     // 짧은 시간마다 모든 요소를 계속 체크해서 active블럭은 moveDown해주고
     // 바닥에 닿은 블럭은 deactive해주고.
-    // 기존 moveDown 등을 얘가 해주게 하자
-
+    // 기존 moveDown 등을 얘가 해주게 하자.
     let activeBlocks = document.querySelectorAll('div.block#active');
-    if((1000 / _this.speed) == (_this.checkerCount)){
+    if((1000 / _this.speed) === (_this.checkerCount)){
         activeBlocks.forEach((eachBlock) => {
             _this.moveDown(eachBlock);
         })
@@ -67,6 +66,25 @@ Playground.prototype.makeBlock = function(){
     // 잘 모르는 분야,
     // javascript로 html element를 만들어주기 위한 전단계인 것 같은데
     // 어떤 식으로 내부가 돌아가는지는 아직 잘 모른다.
+    ////////// htmlElement만드는 법은
+    // A 내가 아는 방법? 
+    // 1. createElement
+    // 2. createDocumentFragement();
+    //   a. https://stackoverflow.com/questions/52693614/can-i-create-a-self-closing-element-with-createelement --> 안됨
+    //   b. https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
+    //   c. createDocumentFragment 는 minimal한 document object를 만들어내는 것이다. 그래서 이걸 만들고 이 DOM에 무언가를 추가하고
+    //      이걸 기존 문서에 appendChild나 insertBefore등으로 합치면 되는 것이다.
+    // 
+    // B. 4가지라고 한다.
+    // https://www.digitalocean.com/community/tutorials/how-to-make-changes-to-the-dom
+    // C. Class 이용
+    // https://stackoverflow.com/questions/50078527/create-html-element-with-es6
+    // D. DOMParser()를 이용
+    // https://stackoverflow.com/questions/3103962/converting-html-string-into-dom-elements/3104237
+    // var xmlString = "<div id='foo'><a href='#'>Link</a><span></span></div>";
+    // doc = new DOMParser().parseFromString(xmlString, "text/xml");
+    /////////// 정답은 3가지 이고 poiemaWeb에 잘 나와있다.
+    // https://poiemaweb.com/js-dom
     let divElem = document.createElement('div');
 
     // appendChild라는 Method.
