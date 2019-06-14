@@ -15,10 +15,12 @@ let Playground = function(){
         deactive인 block element들을 전부 찾아서
         그들의 위치를 비교해도 될 것 같다.
     */
-    //
-    this.playArray = new Array(10);
-    for(let i = 0; i < this.playArray.length; i++){
-        this.playArray[i] = new Array(40);
+    // undefined인 array보다는 0으로 채워진 Array가 나는 더 속이 편하다.
+    // this.playArray[x][y]
+    // x와 y는 일반 2차원 좌표계? 에서 모습에서의 x y로 상상하자
+    this.playMap = new Array(10);
+    for(let i = 0; i < this.playMap.length; i++){
+        this.playMap[i] = new Array(40).fill(0);
     }
 
     // 혹시 필요할줄 알았는데 필요 없는 중
@@ -94,12 +96,19 @@ Playground.prototype.makeBlock = function(){
     // https://www.youtube.com/watch?v=ImTA5-r9TNc&list=PL7pUrjEGbG8ZTnuk0g77aXOWetabeo7x6
     // 위는 생활코딩 Javascript for Web Browser 재생목록
     this.PGDOM.appendChild(divElem);
+    let typeNumber = Math.floor(Math.random() * 2);
     divElem.className = 'block'
-    divElem.className += ' ' + typeList[Math.floor(Math.random() * 2)];
+    divElem.className += ' ' + typeList[typeNumber];
     divElem.style.position = 'absolute';
     divElem.style.top = '-20px';
     divElem.style.left = '100px';
     divElem.id = 'active';
+
+    // x = 0 -> left 0px / x = 5 -> left 100px / x = 9 -> left 180px
+    // y = 0 -> top 380px / y = 9 -> top 200px / y = 19 -> top 0px / y = 20 -> top -20px / y = 39 -> top -400px
+    // left 100px면 x = 5
+    // top -20px면 y = 20
+    this.playMap[5][20] = typeList[typeNumber];
 }
 
 
